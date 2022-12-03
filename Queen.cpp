@@ -4,103 +4,104 @@
 
 using namespace std;
 
-Queen::Queen(Board *b, Square *s, bool colour) : Piece(b, s, colour) {
+Queen::Queen(Board *b, int x, int y, bool colour) : Piece(b, x, y, colour) {
+    type = QUEEN;
     value = 9;
 }
 
-vector<Square *> Queen::moves() {
-    vector<Square *> m;
+list<pair<int, int>> Queen::moves() {
+    list<pair<int, int>> m;
     int i, j;
-    
-    for (i = s->x + 1, j = s->y + 1; i < size && j < size; i++, j++) {
-        if (isLegal(i, j)) m.push_back(&(b->s[i][j]));
-        if (b->s[i][j].p != nullptr) break;
+
+    for (i = x + 1, j = y + 1; i < size && j < size; i++, j++) {
+        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (!(b->isEmpty(i, j))) break;
     }
 
-    for (i = s->x + 1, j = s->y - 1; i < size && j >= 0; i++, j--) {
-        if (isLegal(i, j)) m.push_back(&(b->s[i][j]));
-        if (b->s[i][j].p != nullptr) break;
+    for (i = x + 1, j = y - 1; i < size && j >= 0; i++, j--) {
+        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (!(b->isEmpty(i, j))) break;
     }
 
-    for (i = s->x - 1, j = s->y - 1; i >= 0 && j >= 0; i--, j--) {
-        if (isLegal(i, j)) m.push_back(&(b->s[i][j]));
-        if (b->s[i][j].p != nullptr) break;
+    for (i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
+        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (!(b->isEmpty(i, j))) break;
     }
 
-    for (i = s->x - 1, j = s->y + 1; i >= 0 && j < size; i--, j++) {
-        if (isLegal(i, j)) m.push_back(&(b->s[i][j]));
-        if (b->s[i][j].p != nullptr) break;
+    for (i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++) {
+        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (!(b->isEmpty(i, j))) break;
     }
 
-    for (i = s->x + 1; i < size; i++) {
-        if (isLegal(i, s->y)) m.push_back(&(b->s[i][s->y]));
-        if (b->s[i][s->y].p != nullptr) break;
+    for (int i = x + 1; i < size; i++) {
+        if (isLegal(i, y)) m.push_back(pair(i, y));
+        if (!(b->isEmpty(i, y))) break;
     }
 
-    for (i = s->x - 1; i >= 0; i--) {
-        if (isLegal(i, s->y)) m.push_back(&(b->s[i][s->y]));
-        if (b->s[i][s->y].p != nullptr) break;
+    for (int i = x - 1; i >= 0; i--) {
+        if (isLegal(i, y)) m.push_back(pair(i, y));
+        if (!(b->isEmpty(i, y))) break;
     }
 
-    for (i = s->y + 1; i < size; i++) {
-        if (isLegal(s->x, i)) m.push_back(&(b->s[s->x][i]));
-        if (b->s[s->x][i].p != nullptr) break;
+    for (int i = y + 1; i < size; i++) {
+        if (isLegal(x, i)) m.push_back(pair(x, i));
+        if (!(b->isEmpty(x, i))) break;
     }
 
-    for (i = s->y - 1; i >= 0; i--) {
-        if (isLegal(s->x, i)) m.push_back(&(b->s[s->x][i]));
-        if (b->s[s->x][i].p != nullptr) break;
+    for (int i = y - 1; i >= 0; i--) {
+        if (isLegal(x, i)) m.push_back(pair(x, i));
+        if (!(b->isEmpty(x, i))) break;
     }
 
     return m;
 }
 
-bool Queen::attack(Square *a) {
-    int x = a->x - s->x;
-    int y = a->y - s->y;
+bool Queen::attack(int x, int y) {
+    int rx = x - this->x;
+    int ry = y - this->y;
 
-    if (x != 0 && y != 0 && abs(x) != abs(y)) return false;
+    if (rx != 0 && ry != 0 && abs(rx) != abs(ry)) return false;
 
     int i, j;
 
-    if (abs(x) == abs(y)) {
-        if (x > 0) {
-            if (y > 0) {
-                for (i = s->x + 1, j = s->y + 1; i < a->x && j < a->y; i++, j++) {
-                    if (b->s[i][j].p != nullptr) return false;
+    if (abs(rx) == abs(ry)) {
+        if (rx > 0) {
+            if (ry > 0) {
+                for (i = this->x + 1, j = this->y + 1; i < x && j < y; i++, j++) {
+                    if (!(b->isEmpty(i, j))) return false;
                 }
             } else {
-                for (i = s->x + 1, j = s->y - 1; i < a->x && j > a->y; i++, j--) {
-                    if (b->s[i][j].p != nullptr) return false;
+                for (i = this->x + 1, j = this->y - 1; i < x && j > y; i++, j--) {
+                    if (!(b->isEmpty(i, j))) return false;
                 }
             }
         } else {
             if (y > 0) {
-                for (i = s->x - 1, j = s->y + 1; i > a->x && j < a->y; i--, j++) {
-                    if (b->s[i][j].p != nullptr) return false;
+                for (i = this->x - 1, j = this->y + 1; i > x && j < y; i--, j++) {
+                    if (!(b->isEmpty(i, j))) return false;
                 }
             } else {
-                for (i = s->x - 1, j = s->y - 1; i > a->x && j > a->y; i--, j--) {
-                    if (b->s[i][j].p != nullptr) return false;
+                for (i = this->x - 1, j = this->y - 1; i > x && j > y; i--, j--) {
+                    if (!(b->isEmpty(i, j))) return false;
                 }
             }
         }
     } else {
-        if (x > 0) {
-            for (i = s->x + 1; i < a->x; i++) {
-                if (b->s[i][s->y].p != nullptr) return false;
+        if (rx > 0) {
+            for (i = this->x + 1; i < x; i++) {
+                if (!(b->isEmpty(i, y))) return false;
             }
-        } else if (x < 0) {
-            for (i = s->x - 1; i > a->x; i--) {
-                if (b->s[i][s->y].p != nullptr) return false;
+        } else if (rx < 0) {
+            for (i = this->x - 1; i > x; i--) {
+                if (!(b->isEmpty(i, y))) return false;
             }
-        } else if (y > 0) {
-            for (i = s->y + 1; i < a->y; i++) {
-                if (b->s[s->x][i].p != nullptr) return false;
+        } else if (ry > 0) {
+            for (i = this->y + 1; i < y; i++) {
+                if (!(b->isEmpty(x, i))) return false;
             }
         } else {
-            for (i = s->y - 1; i > a->y; i--) {
-                if (b->s[s->x][i].p != nullptr) return false;
+            for (i = this->y - 1; i > y; i--) {
+                if (!(b->isEmpty(x, i))) return false;;
             }
         }
     }

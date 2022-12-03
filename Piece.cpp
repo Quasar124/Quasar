@@ -2,11 +2,11 @@
 
 using namespace std;
 
-Piece::Piece(Board *b, Square *s, bool colour) {
+Piece::Piece(Board *b, int x, int y, bool colour) {
     this->b = b;
-    this->s = s;
+    this->x = x;
+    this->y = y;
     this->colour = colour;
-    s->p = this;
 
     if (colour == white) {
         b->whitePieces.push_back(this);
@@ -18,26 +18,44 @@ Piece::Piece(Board *b, Square *s, bool colour) {
 bool Piece::isLegal(int x, int y) {
     if (ownPiece(x, y)) return false;
 
-    Square *prev = s;
-    prev->p = nullptr;
-    Piece *t = b->s[x][y].p;
-    if (t != nullptr) t->s = nullptr;
+    int tx = this->x;
+    int ty = this->y;
+    this->x = x;
+    this->y = y;
+    b->s[tx][ty] = nullptr;
+    Piece *t = b->s[x][y];
+    b->s[x][y] = this;
 
-    b->s[x][y].p = this;
-    s = &(b->s[x][y]);
+    if (t) {
+        if (colour == white) {
+            b->blackPieces.remove(t);
+        } else {
+            b->whitePieces.remove(t);
+        }
+    }
+
     bool l = b->inCheck(colour);
-    s = prev;
-    s->p = this;
-    b->s[x][y].p = t;
-    if (t != nullptr) t->s = &(b->s[x][y]);
+
+    this->x = tx;
+    this->y = ty;
+    b->s[tx][ty] = this;
+    b->s[x][y] = t;
+
+    if (t) {
+        if (colour == white) {
+            b->blackPieces.push_back(t);
+        } else {
+            b->whitePieces.push_back(t);
+        }
+    }
 
     return !l;
 }
 
 bool Piece::enemyPiece(int x, int y) {
-    return !(b->s[x][y].isEmpty()) && b->s[x][y].p->colour != colour;
+    return !(b->isEmpty(x, y)) && b->s[x][y]->colour != colour;
 }
 
 bool Piece::ownPiece(int x, int y) {
-    return !(b->s[x][y].isEmpty()) && b->s[x][y].p->colour == colour;
+    return !(b->isEmpty(x, y)) && b->s[x][y]->colour == colour;
 }

@@ -1,66 +1,66 @@
 #include <cmath>
-#include "Piece.hpp"
 #include "Bishop.hpp"
 
 using namespace std;
 
-Bishop::Bishop(Board *b, Square *s, bool colour) : Piece(b, s, colour) {
+Bishop::Bishop(Board *b, int x, int y, bool colour) : Piece(b, x, y, colour) {
+    type = BISHOP;
     value = 3;
 }
 
-vector<Square *> Bishop::moves() {
-    vector<Square *> m;
+list<pair<int, int>> Bishop::moves() {
+    list<pair<int, int>> m;
     int i, j;
     
-    for (i = s->x + 1, j = s->y + 1; i < size && j < size; i++, j++) {
-        if (isLegal(i, j)) m.push_back(&(b->s[i][j]));
-        if (b->s[i][j].p != nullptr) break;
+    for (i = x + 1, j = y + 1; i < size && j < size; i++, j++) {
+        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (!(b->isEmpty(i, j))) break;
     }
 
-    for (i = s->x + 1, j = s->y - 1; i < size && j >= 0; i++, j--) {
-        if (isLegal(i, j)) m.push_back(&(b->s[i][j]));
-        if (b->s[i][j].p != nullptr) break;
+    for (i = x + 1, j = y - 1; i < size && j >= 0; i++, j--) {
+        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (!(b->isEmpty(i, j))) break;
     }
 
-    for (i = s->x - 1, j = s->y - 1; i >= 0 && j >= 0; i--, j--) {
-        if (isLegal(i, j)) m.push_back(&(b->s[i][j]));
-        if (b->s[i][j].p != nullptr) break;
+    for (i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
+        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (!(b->isEmpty(i, j))) break;
     }
 
-    for (i = s->x - 1, j = s->y + 1; i >= 0 && j < size; i--, j++) {
-        if (isLegal(i, j)) m.push_back(&(b->s[i][j]));
-        if (b->s[i][j].p != nullptr) break;
+    for (i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++) {
+        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (!(b->isEmpty(i, j))) break;
     }
 
     return m;
 }
 
-bool Bishop::attack(Square *a) {
-    int x = a->x - s->x;
-    int y = a->y - s->y;
+bool Bishop::attack(int x, int y) {
+    int rx = x - this->x;
+    int ry = y - this->y;
 
-    if (abs(x) != abs(y)) return false;
+    if (abs(rx) != abs(ry)) return false;
 
     int i, j;
 
-    if (x > 0) {
-        if (y > 0) {
-            for (i = s->x + 1, j = s->y + 1; i < a->x && j < a->y; i++, j++) {
-                if (b->s[i][j].p != nullptr) return false;
+    if (rx > 0) {
+        if (ry > 0) {
+            for (i = this->x + 1, j = this->y + 1; i < x && j < y; i++, j++) {
+                if (!(b->isEmpty(i, j))) return false;
             }
         } else {
-            for (i = s->x + 1, j = s->y - 1; i < a->x && j > a->y; i++, j--) {
-                if (b->s[i][j].p != nullptr) return false;
+            for (i = this->x + 1, j = this->y - 1; i < x && j > y; i++, j--) {
+                if (!(b->isEmpty(i, j))) return false;
             }
         }
     } else {
         if (y > 0) {
-            for (i = s->x - 1, j = s->y + 1; i > a->x && j < a->y; i--, j++) {
-                if (b->s[i][j].p != nullptr) return false;
+            for (i = this->x - 1, j = this->y + 1; i > x && j < y; i--, j++) {
+                if (!(b->isEmpty(i, j))) return false;
             }
         } else {
-            for (i = s->x - 1, j = s->y - 1; i > a->x && j > a->y; i--, j--) {
-                if (b->s[i][j].p != nullptr) return false;
+            for (i = this->x - 1, j = this->y - 1; i > x && j > y; i--, j--) {
+                if (!(b->isEmpty(i, j))) return false;
             }
         }
     }

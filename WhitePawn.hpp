@@ -5,8 +5,9 @@ namespace std {
     class WhitePawn : public Piece {
     public:
         bool hasMoved;
-        WhitePawn(Board *b, Square *s, bool colour, bool hasMoved);
-        vector<Square *> moves();
-        bool attack(Square *a);
+        WhitePawn(Board *b, int x, int y, bool colour, bool hasMoved);
+        list<pair<int, int>> moves();
+        bool attack(int x, int y);
+        bool isLegal(int x, int y);
     };
 }

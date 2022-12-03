@@ -4,8 +4,8 @@
 namespace std {
     class Bishop : public Piece {
     public:
-        Bishop(Board *b, Square *s, bool colour);
-        vector<Square *> moves();
-        bool attack(Square *a);
+        Bishop(Board *b, int x, int y, bool colour);
+        list<pair<int, int>> moves();
+        bool attack(int x, int y);
     };
 }

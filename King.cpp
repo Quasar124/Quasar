@@ -1,42 +1,44 @@
 #include <cmath>
 #include "King.hpp"
 #include "Rook.hpp"
-#include "Square.hpp"
 
 using namespace std;
 
-King::King(Board *b, Square *s, bool colour, bool hasMoved) : Piece(b, s, colour) {
+King::King(Board *b, int x, int y, bool colour, bool hasMoved) : Piece(b, x, y, colour) {
+    type = KING;
     value = 0;
     this->hasMoved = hasMoved;
 }
 
-vector<Square *> King::moves() {
-    vector<Square *> m;
+list<pair<int, int>> King::moves() {
+    list<pair<int, int>> m;
 
-    if (isLegal(s->x, s->y + 1)) m.push_back(&(b->s[s->x][s->y + 1]));
-    if (isLegal(s->x + 1, s->y + 1)) m.push_back(&(b->s[s->x + 1][s->y + 1]));
-    if (isLegal(s->x + 1, s->y)) m.push_back(&(b->s[s->x + 1][s->y]));
-    if (isLegal(s->x + 1, s->y - 1)) m.push_back(&(b->s[s->x + 1][s->y - 1]));
-    if (isLegal(s->x, s->y - 1)) m.push_back(&(b->s[s->x][s->y - 1]));
-    if (isLegal(s->x - 1, s->y - 1)) m.push_back(&(b->s[s->x - 1][s->y - 1]));
-    if (isLegal(s->x - 1, s->y)) m.push_back(&(b->s[s->x - 1][s->y]));
-    if (isLegal(s->x - 1, s->y + 1)) m.push_back(&(b->s[s->x - 1][s->y + 1]));
+    if (isLegal(x, y + 1)) m.push_back(pair(x, y + 1));
+    if (isLegal(x + 1, y + 1)) m.push_back(pair(x + 1, y + 1));
+    if (isLegal(x + 1, y)) m.push_back(pair(x + 1, y));
+    if (isLegal(x + 1, y - 1)) m.push_back(pair(x + 1, y - 1));
+    if (isLegal(x, y - 1)) m.push_back(pair(x, y - 1));
+    if (isLegal(x - 1, y - 1)) m.push_back(pair(x - 1, y - 1));
+    if (isLegal(x - 1, y)) m.push_back(pair(x - 1, y));
+    if (isLegal(x - 1, y + 1)) m.push_back(pair(x - 1, y + 1));
 
-    if (b->s[1][s->y].isEmpty() && b->s[2][s->y].isEmpty() && b->s[3][s->y].isEmpty() && !hasMoved && ownPiece(0, s->y)) {
-        Rook *r = dynamic_cast<Rook *>(b->s[0][s->y].p);
-        if (r && !(r->hasMoved) && !(b->inCheck(colour)) && !(b->attack(&(b->s[2][s->y]), !colour)) && !(b->attack(&(b->s[3][s->y]), !colour))) m.push_back(&(b->s[2][s->y]));
-    }
+    if (!hasMoved) {
+        if (b->isEmpty(1, y) && b->isEmpty(2, y) && b->isEmpty(3, y) && ownPiece(0, y)) {
+            Rook *r = dynamic_cast<Rook *>(b->s[0][y]);
+            if (r && !(r->hasMoved) && !(b->inCheck(colour)) && !(b->attack(2, y, !colour)) && !(b->attack(3, y, !colour))) m.push_back(pair(2, y));
+        }
 
-    if (b->s[5][s->y].isEmpty() && b->s[6][s->y].isEmpty() && !hasMoved && ownPiece(7, s->y)) {
-        Rook *r = dynamic_cast<Rook *>(b->s[7][s->y].p);
-        if (r && !(r->hasMoved) && !(b->inCheck(colour)) && !(b->attack(&(b->s[5][s->y]), !colour)) && !(b->attack(&(b->s[6][s->y]), !colour))) m.push_back(&(b->s[6][s->y]));
+        if (b->isEmpty(5, y) && b->isEmpty(6, y) && ownPiece(7, y)) {
+            Rook *r = dynamic_cast<Rook *>(b->s[7][y]);
+            if (r && !(r->hasMoved) && !(b->inCheck(colour)) && !(b->attack(5, y, !colour)) && !(b->attack(6, y, !colour))) m.push_back(pair(6, y));
+        }
     }
 
     return m;
 }
 
-bool King::attack(Square *a) {
-    return abs(s->x - a->x) <= 1 && abs(s->y - a->y) <= 1;
+bool King::attack(int x, int y) {
+    return abs(x - this->x) <= 1 && abs(y - this->y) <= 1;
 }
 
 bool King::isLegal(int x, int y) {

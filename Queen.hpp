@@ -4,8 +4,8 @@
 namespace std {
     class Queen : public Piece {
     public:
-        Queen(Board *b, Square *s, bool colour);
-        vector<Square *> moves();
-        bool attack(Square *a);
+        Queen(Board *b, int x, int y, bool colour);
+        list<pair<int, int>> moves();
+        bool attack(int x, int y);
     };
 }

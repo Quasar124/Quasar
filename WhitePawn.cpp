@@ -1,25 +1,29 @@
 #include <cmath>
-#include "Square.hpp"
 #include "WhitePawn.hpp"
 
 using namespace std;
 
-WhitePawn::WhitePawn(Board *b, Square *s, bool colour, bool hasMoved) : Piece(b, s, colour) {
+WhitePawn::WhitePawn(Board *b, int x, int y, bool colour, bool hasMoved) : Piece(b, x, y, colour) {
+    type = PAWN;
     value = 1;
     this->hasMoved = hasMoved;
 }
 
-vector<Square *> WhitePawn::moves() {
-    vector<Square *> m;
+list<pair<int, int>> WhitePawn::moves() {
+    list<pair<int, int>> m;
 
-    if (!hasMoved && b->s[s->x][2].isEmpty() && b->s[s->x][3].isEmpty() && isLegal(s->x, 3)) m.push_back(&(b->s[s->x][3]));
-    if (b->s[s->x][s->y + 1].isEmpty() && isLegal(s->x, s->y + 1)) m.push_back(&(b->s[s->x][s->y + 1]));
-    if (onBoard(s->x - 1, s->y + 1) && enemyPiece(s->x - 1, s->y + 1) && isLegal(s->x - 1, s->y + 1)) m.push_back(&(b->s[s->x - 1][s->y + 1]));
-    if (onBoard(s->x + 1, s->y + 1) && enemyPiece(s->x + 1, s->y + 1) && isLegal(s->x + 1, s->y + 1)) m.push_back(&(b->s[s->x + 1][s->y + 1]));
+    if (!hasMoved && b->isEmpty(x, 2) && b->isEmpty(x, 3) && isLegal(x, 3)) m.push_back(pair(x, 3));
+    if (b->isEmpty(x, y + 1) && isLegal(x, y + 1)) m.push_back(pair(x, y + 1));
+    if (isLegal(x - 1, y + 1) && enemyPiece(x - 1, y + 1)) m.push_back(pair(x - 1, y + 1));
+    if (isLegal(x + 1, y + 1) && enemyPiece(x + 1, y + 1)) m.push_back(pair(x + 1, y + 1));
 
     return m;
 }
 
-bool WhitePawn::attack(Square *a) {
-    return s->y + 1 == a->y && (s->x - 1 == a->x || s->x + 1 == a->x);
+bool WhitePawn::attack(int x, int y) {
+    return this->y + 1 == y && (this->x - 1 == x || this->x + 1 == x);
+}
+
+bool WhitePawn::isLegal(int x, int y) {
+    return onBoard(x, y) && Piece::isLegal(x, y);
 }
