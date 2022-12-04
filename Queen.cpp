@@ -1,5 +1,4 @@
 #include <cmath>
-#include "Piece.hpp"
 #include "Queen.hpp"
 
 using namespace std;
@@ -9,47 +8,47 @@ Queen::Queen(Board *b, int x, int y, bool colour) : Piece(b, x, y, colour) {
     value = 9;
 }
 
-list<pair<int, int>> Queen::moves() {
-    list<pair<int, int>> m;
+list<tuple<int, int, int>> Queen::moves() {
+    list<tuple<int, int, int>> m;
     int i, j;
 
     for (i = x + 1, j = y + 1; i < size && j < size; i++, j++) {
-        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (isLegal(i, j)) m.push_back(tuple(i, j, 0));
         if (!(b->isEmpty(i, j))) break;
     }
 
     for (i = x + 1, j = y - 1; i < size && j >= 0; i++, j--) {
-        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (isLegal(i, j)) m.push_back(tuple(i, j, 0));
         if (!(b->isEmpty(i, j))) break;
     }
 
     for (i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
-        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (isLegal(i, j)) m.push_back(tuple(i, j, 0));
         if (!(b->isEmpty(i, j))) break;
     }
 
     for (i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++) {
-        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (isLegal(i, j)) m.push_back(tuple(i, j, 0));
         if (!(b->isEmpty(i, j))) break;
     }
 
     for (int i = x + 1; i < size; i++) {
-        if (isLegal(i, y)) m.push_back(pair(i, y));
+        if (isLegal(i, y)) m.push_back(tuple(i, y, 0));
         if (!(b->isEmpty(i, y))) break;
     }
 
     for (int i = x - 1; i >= 0; i--) {
-        if (isLegal(i, y)) m.push_back(pair(i, y));
+        if (isLegal(i, y)) m.push_back(tuple(i, y, 0));
         if (!(b->isEmpty(i, y))) break;
     }
 
     for (int i = y + 1; i < size; i++) {
-        if (isLegal(x, i)) m.push_back(pair(x, i));
+        if (isLegal(x, i)) m.push_back(tuple(x, i, 0));
         if (!(b->isEmpty(x, i))) break;
     }
 
     for (int i = y - 1; i >= 0; i--) {
-        if (isLegal(x, i)) m.push_back(pair(x, i));
+        if (isLegal(x, i)) m.push_back(tuple(x, i, 0));
         if (!(b->isEmpty(x, i))) break;
     }
 

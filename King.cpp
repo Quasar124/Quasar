@@ -10,27 +10,27 @@ King::King(Board *b, int x, int y, bool colour, bool hasMoved) : Piece(b, x, y, 
     this->hasMoved = hasMoved;
 }
 
-list<pair<int, int>> King::moves() {
-    list<pair<int, int>> m;
+list<tuple<int, int, int>> King::moves() {
+    list<tuple<int, int, int>> m;
 
-    if (isLegal(x, y + 1)) m.push_back(pair(x, y + 1));
-    if (isLegal(x + 1, y + 1)) m.push_back(pair(x + 1, y + 1));
-    if (isLegal(x + 1, y)) m.push_back(pair(x + 1, y));
-    if (isLegal(x + 1, y - 1)) m.push_back(pair(x + 1, y - 1));
-    if (isLegal(x, y - 1)) m.push_back(pair(x, y - 1));
-    if (isLegal(x - 1, y - 1)) m.push_back(pair(x - 1, y - 1));
-    if (isLegal(x - 1, y)) m.push_back(pair(x - 1, y));
-    if (isLegal(x - 1, y + 1)) m.push_back(pair(x - 1, y + 1));
+    if (isLegal(x, y + 1)) m.push_back(tuple(x, y + 1, 0));
+    if (isLegal(x + 1, y + 1)) m.push_back(tuple(x + 1, y + 1, 0));
+    if (isLegal(x + 1, y)) m.push_back(tuple(x + 1, y, 0));
+    if (isLegal(x + 1, y - 1)) m.push_back(tuple(x + 1, y - 1, 0));
+    if (isLegal(x, y - 1)) m.push_back(tuple(x, y - 1, 0));
+    if (isLegal(x - 1, y - 1)) m.push_back(tuple(x - 1, y - 1, 0));
+    if (isLegal(x - 1, y)) m.push_back(tuple(x - 1, y, 0));
+    if (isLegal(x - 1, y + 1)) m.push_back(tuple(x - 1, y + 1, 0));
 
     if (!hasMoved) {
         if (b->isEmpty(1, y) && b->isEmpty(2, y) && b->isEmpty(3, y) && ownPiece(0, y)) {
             Rook *r = dynamic_cast<Rook *>(b->s[0][y]);
-            if (r && !(r->hasMoved) && !(b->inCheck(colour)) && !(b->attack(2, y, !colour)) && !(b->attack(3, y, !colour))) m.push_back(pair(2, y));
+            if (r && !(r->hasMoved) && !(b->inCheck(colour)) && !(b->attack(2, y, !colour)) && !(b->attack(3, y, !colour))) m.push_back(tuple(2, y, 0));
         }
 
         if (b->isEmpty(5, y) && b->isEmpty(6, y) && ownPiece(7, y)) {
             Rook *r = dynamic_cast<Rook *>(b->s[7][y]);
-            if (r && !(r->hasMoved) && !(b->inCheck(colour)) && !(b->attack(5, y, !colour)) && !(b->attack(6, y, !colour))) m.push_back(pair(6, y));
+            if (r && !(r->hasMoved) && !(b->inCheck(colour)) && !(b->attack(5, y, !colour)) && !(b->attack(6, y, !colour))) m.push_back(tuple(6, y, 0));
         }
     }
 

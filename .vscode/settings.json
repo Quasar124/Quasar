@@ -2,6 +2,8 @@
     "files.associations": {
         "list": "cpp",
         "utility": "cpp",
-        "cstdlib": "cpp"
+        "cstdlib": "cpp",
+        "tuple": "cpp",
+        "cmath": "cpp"
     }
 }

@@ -8,27 +8,27 @@ Bishop::Bishop(Board *b, int x, int y, bool colour) : Piece(b, x, y, colour) {
     value = 3;
 }
 
-list<pair<int, int>> Bishop::moves() {
-    list<pair<int, int>> m;
+list<tuple<int, int, int>> Bishop::moves() {
+    list<tuple<int, int, int>> m;
     int i, j;
     
     for (i = x + 1, j = y + 1; i < size && j < size; i++, j++) {
-        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (isLegal(i, j)) m.push_back(tuple(i, j, 0));
         if (!(b->isEmpty(i, j))) break;
     }
 
     for (i = x + 1, j = y - 1; i < size && j >= 0; i++, j--) {
-        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (isLegal(i, j)) m.push_back(tuple(i, j, 0));
         if (!(b->isEmpty(i, j))) break;
     }
 
     for (i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
-        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (isLegal(i, j)) m.push_back(tuple(i, j, 0));
         if (!(b->isEmpty(i, j))) break;
     }
 
     for (i = x - 1, j = y + 1; i >= 0 && j < size; i--, j++) {
-        if (isLegal(i, j)) m.push_back(pair(i, j));
+        if (isLegal(i, j)) m.push_back(tuple(i, j, 0));
         if (!(b->isEmpty(i, j))) break;
     }
 

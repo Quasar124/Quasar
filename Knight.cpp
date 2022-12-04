@@ -8,17 +8,17 @@ Knight::Knight(Board *b, int x, int y, bool colour) : Piece(b, x, y, colour) {
     value = 3;
 }
 
-list<pair<int, int>> Knight::moves() {
-    list<pair<int, int>> m;
+list<tuple<int, int, int>> Knight::moves() {
+    list<tuple<int, int, int>> m;
 
-    if (isLegal(x + 1, y + 2)) m.push_back(pair(x + 1, y + 2));
-    if (isLegal(x + 2, y + 1)) m.push_back(pair(x + 2, y + 1));
-    if (isLegal(x + 2, y - 1)) m.push_back(pair(x + 2, y - 1));
-    if (isLegal(x + 1, y - 2)) m.push_back(pair(x + 1, y - 2));
-    if (isLegal(x - 1, y - 2)) m.push_back(pair(x - 1, y - 2));
-    if (isLegal(x - 2, y - 1)) m.push_back(pair(x - 2, y - 1));
-    if (isLegal(x - 2, y + 1)) m.push_back(pair(x - 2, y + 1));
-    if (isLegal(x - 1, y + 2)) m.push_back(pair(x - 1, y + 2));
+    if (isLegal(x + 1, y + 2)) m.push_back(tuple(x + 1, y + 2, 0));
+    if (isLegal(x + 2, y + 1)) m.push_back(tuple(x + 2, y + 1, 0));
+    if (isLegal(x + 2, y - 1)) m.push_back(tuple(x + 2, y - 1, 0));
+    if (isLegal(x + 1, y - 2)) m.push_back(tuple(x + 1, y - 2, 0));
+    if (isLegal(x - 1, y - 2)) m.push_back(tuple(x - 1, y - 2, 0));
+    if (isLegal(x - 2, y - 1)) m.push_back(tuple(x - 2, y - 1, 0));
+    if (isLegal(x - 2, y + 1)) m.push_back(tuple(x - 2, y + 1, 0));
+    if (isLegal(x - 1, y + 2)) m.push_back(tuple(x - 1, y + 2, 0));
 
     return m;
 }
