@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <tuple>
 #include "Board.hpp"
 #include "helper.hpp"
 
