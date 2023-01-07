@@ -4,6 +4,10 @@
         "utility": "cpp",
         "cstdlib": "cpp",
         "tuple": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "new": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp"
     }
 }
