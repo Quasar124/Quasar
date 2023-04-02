@@ -10,6 +10,8 @@ namespace std {
     class Board {
     public:
         Piece *s[size][size];
+        Piece *whiteKing;
+        Piece *blackKing;
         list<Piece *> whitePieces;
         list<Piece *> blackPieces;
         bool turn;
@@ -23,9 +25,8 @@ namespace std {
 
         bool attack(int x, int y, bool colour);
         bool inCheck(bool colour);
-        void move(Piece *p, int x, int y);
+        Piece* move(Piece *p, int x, int y, int pr);
         bool isEmpty(int x, int y);
-        void place(Piece *p);
         string getFEN();
     };
     

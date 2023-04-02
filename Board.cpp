@@ -14,31 +14,31 @@ Board::Board() {
         for (int j = 0; j < size; j++) s[i][j] = nullptr;
     }
 
-    place(new King(this, 4, 0, white, false));
-    place(new King(this, 4, size - 1, black, false));
+    whiteKing = new King(this, 4, 0, white, false);
+    blackKing = new King(this, 4, size - 1, black, false);
 
     for (int i = 0; i < size; i++) {
-        place(new WhitePawn(this, i, 1, white, false));
-        place(new BlackPawn(this, i, size - 2, black, false));
+        WhitePawn(this, i, 1, white, false);
+        BlackPawn(this, i, size - 2, black, false);
     }
 
-    place(new Rook(this, 0, 0, white, false));
-    place(new Rook(this, 0, size - 1, black, false));
-    place(new Rook(this, size - 1, 0, white, false));
-    place(new Rook(this, size - 1, size - 1, black, false));
+    Rook(this, 0, 0, white, false);
+    Rook(this, 0, size - 1, black, false);
+    Rook(this, size - 1, 0, white, false);
+    Rook(this, size - 1, size - 1, black, false);
 
-    place(new Knight(this, 1, 0, white));
-    place(new Knight(this, 1, size - 1, black));
-    place(new Knight(this, size - 2, 0, white));
-    place(new Knight(this, size - 2, size - 1, black));
+    Knight(this, 1, 0, white);
+    Knight(this, 1, size - 1, black);
+    Knight(this, size - 2, 0, white);
+    Knight(this, size - 2, size - 1, black);
 
-    place(new Bishop(this, 2, 0, white));
-    place(new Bishop(this, 2, size - 1, black));
-    place(new Bishop(this, size - 3, 0, white));
-    place(new Bishop(this, size - 3, size - 1, black));
+    Bishop(this, 2, 0, white);
+    Bishop(this, 2, size - 1, black);
+    Bishop(this, size - 3, 0, white);
+    Bishop(this, size - 3, size - 1, black);
 
-    place(new Queen(this, 3, 0, white));
-    place(new Queen(this, 3, size - 1, black));
+    Queen(this, 3, 0, white);
+    Queen(this, 3, size - 1, black);
 
     turn = white;
 }
@@ -59,22 +59,23 @@ bool Board::attack(int x, int y, bool colour) {
 
 bool Board::inCheck(bool colour) {
     if (colour == white) {
-        return attack(whitePieces.front()->x, whitePieces.front()->y, black);      
+        return attack(whiteKing->x, whiteKing->y, black);      
     } else {
-        return attack(blackPieces.front()->x, blackPieces.front()->y, white);
+        return attack(blackKing->x, blackKing->y, white);
     }
+}
+
+Piece* std::Board::move(Piece *p, int x, int y, int pr)
+{
+    return nullptr;
 }
 
 bool Board::isEmpty(int x, int y) {
     return s[x][y] == nullptr;
 }
 
-void Board::place(Piece *p) {
-    s[p->x][p->y] = p;
-    p->colour == white ? whitePieces.push_back(p) : blackPieces.push_back(p);
-}
-
 string Board::getFEN() {
+    // TODO
     return string("eqeqe");
 }
 

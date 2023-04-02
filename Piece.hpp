@@ -24,6 +24,7 @@ namespace std {
         int type;
         int value;
         Piece(Board *b, int x, int y, bool colour);
+        virtual void move(int x, int y, int pr);
         virtual list<tuple<int, int, int>> moves() = 0;
         virtual bool attack(int x, int y) = 0;
         bool ownPiece(int x, int y);

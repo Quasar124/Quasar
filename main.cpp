@@ -4,9 +4,6 @@
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-    Board x;
-    
-    cout << x.getFEN() << endl;
-
+    Board b;
     return 0;
 }

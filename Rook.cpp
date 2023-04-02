@@ -1,4 +1,3 @@
-#include "Piece.hpp"
 #include "Rook.hpp"
 
 using namespace std;

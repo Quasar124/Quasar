@@ -8,11 +8,13 @@ Piece::Piece(Board *b, int x, int y, bool colour) {
     this->y = y;
     this->colour = colour;
 
-    if (colour == white) {
-        b->whitePieces.push_back(this);
-    } else {
-        b->blackPieces.push_back(this);
-    }
+    b->s[x][y] = this;
+    colour == white ? b->whitePieces.push_back(this) : b->blackPieces.push_back(this);
+}
+
+void std::Piece::move(int x, int y, int pr) {
+    this->x = x;
+    this->y = y;
 }
 
 bool Piece::isLegal(int x, int y) {
@@ -26,13 +28,7 @@ bool Piece::isLegal(int x, int y) {
     Piece *t = b->s[x][y];
     b->s[x][y] = this;
 
-    if (t) {
-        if (colour == white) {
-            b->blackPieces.remove(t);
-        } else {
-            b->whitePieces.remove(t);
-        }
-    }
+    if (t) colour == white ? b->blackPieces.remove(t) : b->whitePieces.remove(t);
 
     bool l = b->inCheck(colour);
 
@@ -41,13 +37,7 @@ bool Piece::isLegal(int x, int y) {
     b->s[tx][ty] = this;
     b->s[x][y] = t;
 
-    if (t) {
-        if (colour == white) {
-            b->blackPieces.push_back(t);
-        } else {
-            b->whitePieces.push_back(t);
-        }
-    }
+    if (t) colour == white ? b->blackPieces.push_back(t) : b->whitePieces.push_back(t);
 
     return !l;
 }

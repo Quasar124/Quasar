@@ -9,6 +9,11 @@ WhitePawn::WhitePawn(Board *b, int x, int y, bool colour, bool hasMoved) : Piece
     this->hasMoved = hasMoved;
 }
 
+void std::WhitePawn::move(int x, int y, int pr) {
+    Piece::move(x, y, pr);
+    
+}
+
 list<tuple<int, int, int>> WhitePawn::moves() {
     list<tuple<int, int, int>> m;
 
